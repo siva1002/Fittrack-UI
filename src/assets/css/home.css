@@ -1,0 +1,27 @@
+/* body{
+    height: auto;
+} */
+
+.topdash{
+    display: flex;
+    flex-direction: row;
+    gap:10%;
+    justify-content:center
+}
+.createworkout input{
+    width: 75%;
+  }
+
+.createworkout{
+    background-color: #c4f6ff;
+    float: right;
+    max-width: 50%;
+}
+.workoutdiv{
+    display: flex;
+    flex-direction: column;
+}
+button{
+    width: auto;
+    
+}

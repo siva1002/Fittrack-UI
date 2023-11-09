@@ -1,0 +1,67 @@
+/* styles.css */
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.logindiv {
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  margin: 0;
+}
+.logindiv button {
+  width: 25%;
+}
+
+.container {
+  max-width: 300px;
+  padding: 20px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+button {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+.startworkoutdiv {
+  margin-top: 9em;
+  width: max-content;
+}
+.startworkoutdiv details {
+  margin: 2rem;
+  background: #6ba7db;
+  border-radius: 7px;
+}
+
+.startworkoutdiv{
+  background-color: rgba(13, 17, 57, 0.754);
+}
