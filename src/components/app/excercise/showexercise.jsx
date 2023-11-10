@@ -25,7 +25,7 @@ function ShowExerciseComponent({ props }) {
   }
   return (
     <>
-    <button onClick={()=>ShowForm(workoutid)}>Add Routine</button>
+    <button onClick={()=>ShowForm(workoutid)} >Add Routine</button>
      {Addform && <CreateExercise props={{"id":Workout}} />}
       {data?.length && !Addform && (
         <div className="createexercise">
@@ -35,6 +35,8 @@ function ShowExerciseComponent({ props }) {
                   <h1>{e.exercise}</h1>
                   <h1>reps: {e.reps}</h1>
                   <h1>sets: {e.sets}</h1>
+                  <h1>duration: {e.duration}</h1>
+
                 </div>
               );
 

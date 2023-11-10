@@ -57,8 +57,7 @@ function Workouts() {
               return (
                 <div key={i}>
                   {console.log(workout?.exercise)}
-                  <h1>Name:{workout.name}</h1>
-                  <h1>Description:{workout.description}</h1>
+                  <h1>{workout.name}</h1>
                   <div>
                     <button
                       disabled={workout.exercise.length <= 0 ? true : false}
@@ -79,7 +78,7 @@ function Workouts() {
       )}
       {!IsStarted && !ishown && (
         <div>
-          <button onClick={() => IsShown(true)}>close</button>
+          <button onClick={() => IsShown(true)} style={{float:"left",backgroundColor:"white",border:"1px solid black",color:"black"}}>back</button>
           <ShowExerciseComponent props={{ routines: routines }} />
         </div>
       )}

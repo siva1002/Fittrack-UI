@@ -47,7 +47,7 @@ function CreateExercise(props) {
 
   return (
     <>
-        <div className="createexercise" style={{"width": "fit-content","margin-left": "40%"}}>
+        <div className="createexercise" style={{"width": "fit-content",marginLeft: "40%"}}>
           <h1></h1>
           <label>
             Name:

@@ -7,11 +7,13 @@ const GET_DASHBOARD = gql`
       id
       exercise {
         exercise
+        duration
         id
         reps
         sets
         workout {
           id
+          name
         }
       }
     }
