@@ -25,10 +25,10 @@ function ShowExerciseComponent({ props }) {
   }
   return (
     <>
-    <button onClick={()=>ShowForm(workoutid)} >Add Routine</button>
+    <button onClick={()=>ShowForm(workoutid)} style={{float:"right"}} >Add Routine</button>
      {Addform && <CreateExercise props={{"id":Workout}} />}
       {data?.length && !Addform && (
-        <div className="createexercise">
+        <div className="routines">
           {data.map((e, index) => {
               return (
                 <div key={e.id}>

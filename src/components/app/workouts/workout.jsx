@@ -7,10 +7,9 @@ import AddWorkout from "./createworkout";
 import StartWorkoutComponent from "./startworkout";
 import ShowExerciseComponent from "../excercise/showexercise";
 
-
 function Workouts() {
   const workouts = useSelector((state) => state.workout.workout);
-  const { loading, error, data } = useQuery(Queries.dashboard);
+  const { loading, error, data } = useQuery(Queries.workout);
   const [ishown, IsShown] = useState(true);
   const [IsStarted, setStarted] = useState(false);
   const [addWorkout, setAddWorkout] = useState(false);
@@ -48,16 +47,24 @@ function Workouts() {
       {ishown && (
         <div className="workoutdiv">
           <div>
-            <button onClick={()=>setAddWorkout((e)=>!e)} style={{"float":"right"}} >{addWorkout?"Close":"Add Workout"}</button> 
-            {addWorkout && <AddWorkout  />}
+            <button
+              onClick={() => setAddWorkout((e) => !e)}
+              style={{ float: "right" }}
+            >
+              {addWorkout ? "Close" : "Add Workout"}
+            </button>
+            {addWorkout && <AddWorkout />}
           </div>
-          <div>
+          <div className="workouts">
             {workouts.map((workout, i) => {
-              console.log(workout);
+              console.log(workout.exercise);
               return (
                 <div key={i}>
                   {console.log(workout?.exercise)}
                   <h1>{workout.name}</h1>
+                  <h2>
+                    Duration:{workout.totalduration ? workout.totalduration : 0}
+                  </h2>
                   <div>
                     <button
                       disabled={workout.exercise.length <= 0 ? true : false}
@@ -78,7 +85,17 @@ function Workouts() {
       )}
       {!IsStarted && !ishown && (
         <div>
-          <button onClick={() => IsShown(true)} style={{float:"left",backgroundColor:"white",border:"1px solid black",color:"black"}}>back</button>
+          <button
+            onClick={() => IsShown(true)}
+            style={{
+              float: "left",
+              backgroundColor: "white",
+              border: "1px solid black",
+              color: "black",
+            }}
+          >
+            back
+          </button>
           <ShowExerciseComponent props={{ routines: routines }} />
         </div>
       )}

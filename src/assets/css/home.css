@@ -25,3 +25,12 @@ button{
     width: auto;
     
 }
+.workouts{
+    margin: auto;
+}
+
+.routines{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}

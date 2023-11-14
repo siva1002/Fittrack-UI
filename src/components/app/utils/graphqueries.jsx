@@ -29,8 +29,18 @@ const GET_WORKOUTS = gql`
   {
     workout {
       description
-      name
       id
+      name
+      totalduration
+      exercise {
+        duration
+        exercise
+        reps
+        sets
+        workout {
+          id
+        }
+      }
     }
   }
 `;
