@@ -5,12 +5,14 @@ import Mutations from "../utils/graphmutations";
 import { useMutation, gql } from "@apollo/client";
 import Workouts from "../workouts/workout";
 import ShowExerciseComponent from "./showexercise";
+import "../../../assets/css/routines.css"
 
 function CreateExercise(props) {
   const [name, setName] = useState("");
   const [reps, setRep] = useState(0);
   const [sets, setcount] = useState(0);
-  const [ishown, changeshown] = useState(true);
+  const [duration,setDuration]=useState(0)
+  
   let workout = parseInt(props.props.id);
   const [CreateExercise] = useMutation(Mutations.excercise);
 
@@ -23,11 +25,14 @@ function CreateExercise(props) {
   const handleSets = (event) => {
     setcount(parseInt(event.target.value));
   };
+  const handleDurationChange = (event) => {
+    setDuration(parseInt(event.target.value));
+  };
 
   const handleSubmit = () => {
     if (name && sets && reps)
       CreateExercise({
-        variables: { name, sets, reps, workout },
+        variables: { name, sets, reps, workout,duration },
       })
         .then((response) => {
           console.log("Workout created:", response);
@@ -47,25 +52,33 @@ function CreateExercise(props) {
 
   return (
     <>
-        <div className="createexercise" style={{"width": "fit-content",marginLeft: "40%"}}>
-          <h1></h1>
-          <label>
-            Name:
-            <input type="text" value={name} onChange={handleNameChange} />
-          </label>
+      <div
+        className="createexercise"
+        style={{ width: "fit-content", marginLeft: "40%" }}
+      >
+        <h1></h1>
+        <label>
+          Name:
+          <input type="text" value={name} onChange={handleNameChange} />
+        </label>
+        <br />
+        <label>
+          Reps:
           <br />
-          <label>
-            Reps:
-            <br />
-            <input value={reps} type="number" onChange={handleRepchange} />
-          </label>
-          <label>
-            sets:
-            <br />
-            <input value={sets} type="number" onChange={handleSets} />
-          </label>
-          <button onClick={handleSubmit}>Create</button>
-        </div>
+          <input value={reps} type="number" onChange={handleRepchange} />
+        </label>
+        <label>
+          sets:
+          <br />
+          <input value={sets} type="number" onChange={handleSets} />
+        </label>
+        <label>
+          Duration:
+          <br />
+          <input type="number" value={duration} onChange={handleDurationChange} />
+        </label>
+        <button onClick={handleSubmit}>Create</button>
+      </div>
     </>
   );
 }

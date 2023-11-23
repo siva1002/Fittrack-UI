@@ -1,11 +1,16 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { WorkoutInfo } from "../../redux-store/redux-featutre/workoutslice";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import Queries from "../utils/graphqueries";
 import AddWorkout from "./createworkout";
 import StartWorkoutComponent from "./startworkout";
 import ShowExerciseComponent from "../excercise/showexercise";
+import { TopNavBar } from "../../layouts/navlayout";
+import Mutations from "../utils/graphmutations";
+import { useNavigate } from "react-router-dom";
+
+let navigate=useNavigate
 
 function Workouts() {
   const workouts = useSelector((state) => state.workout.workout);
@@ -13,6 +18,7 @@ function Workouts() {
   const [ishown, IsShown] = useState(true);
   const [IsStarted, setStarted] = useState(false);
   const [addWorkout, setAddWorkout] = useState(false);
+  const [Activityupdate]=useMutation(Mutations.updatetracking)
 
   const [routines, setWorkout] = useState([]);
   const dispatch = useDispatch();
@@ -22,11 +28,23 @@ function Workouts() {
   }
 
   const Startworkout = (routines) => {
+    console.log(routines,"current routine")
     setStarted((e) => !e);
     IsShown((e) => !e);
-    console.log(routines);
     setWorkout(routines);
   };
+
+  const StopWorkout=(w)=>{
+    Activityupdate({variables:{workout:parseInt(w.id)}}).then((res)=>{
+      return res
+    }).then((data)=>{
+      console.log(data.data,"data")
+      if (data.data.trackingsUpdate.status===200){
+        window.location.reload()
+      }
+      setStarted(false);
+    })
+  }
 
   const ShowExercise = (routines) => {
     if (ishown) {
@@ -44,12 +62,13 @@ function Workouts() {
   };
   return (
     <>
+      <TopNavBar />
       {ishown && (
         <div className="workoutdiv">
           <div>
             <button
               onClick={() => setAddWorkout((e) => !e)}
-              style={{ float: "right" }}
+              style={{ float: "right", width: "max-content" }}
             >
               {addWorkout ? "Close" : "Add Workout"}
             </button>
@@ -57,25 +76,40 @@ function Workouts() {
           </div>
           <div className="workouts">
             {workouts.map((workout, i) => {
-              console.log(workout.exercise);
               return (
-                <div key={i}>
-                  {console.log(workout?.exercise)}
-                  <h1>{workout.name}</h1>
-                  <h2>
-                    Duration:{workout.totalduration ? workout.totalduration : 0}
-                  </h2>
+                <div key={i} className="each-workout">
+                  <h1 style={{ textAlign: "center" }}>{workout.name}</h1>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    <h1 style={{ margin: 0 }}>
+                      Duration:
+                      {workout.totalduration ? workout.totalduration : 0}
+                    </h1>
+                    <h1>
+                      Count:
+                      <span>
+                        <p>{workout.count ? workout.count : 0}</p>
+                      </span>
+                    </h1>
+                  </div>
+
                   <div>
                     <button
-                      disabled={workout.exercise.length <= 0 ? true : false}
+                      disabled={workout.exercise.length <= 0 && workout.category != 'CARDIO' ? true : false}
                       style={{ marginRight: "2rem" }}
-                      onClick={() => Startworkout(workout.exercise)}
+                      onClick={() => (!workout.started && !IsStarted) || (workout.started && workout.category != 'CARDIO' ) ?Startworkout(workout):StopWorkout(workout)}
                     >
-                      Start
+                      {console.log(workout.started,workout.category != 'CARDIO',workout.name)}
+                      {(!workout.started && !IsStarted) || (workout.started && workout.category != 'CARDIO' ) ? "Start":"Stop"}
                     </button>
-                    <button onClick={() => ShowExercise(workout)}>
+                    {workout.category != 'CARDIO' && <button onClick={() => ShowExercise(workout)}>
                       Show routines
-                    </button>
+                    </button>}
                   </div>
                 </div>
               );
@@ -99,13 +133,15 @@ function Workouts() {
           <ShowExerciseComponent props={{ routines: routines }} />
         </div>
       )}
-      {IsStarted && (
+      
+      {(IsStarted) && (
         <div>
           <button onClick={() => ChangeIsStarted()}>close</button>
+          {console.log(routines)}
           <StartWorkoutComponent props={{ routines: routines }} />
         </div>
       )}
-    </>
+        </>
   );
 }
 export default Workouts;

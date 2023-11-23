@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useQuery } from "@apollo/client";
 import Workouts from "../workouts/workout";
 import { useMutation } from "@apollo/client";
 import Mutations from "../utils/graphmutations";
 
 function StartWorkoutComponent({ props }) {
   const data = props.routines;
-  console.log(parseInt(data));
-  const workout = parseInt(data[0].workout.id);
+  const workout = parseInt(data.id);
+  const category = data.category;
+
+  console.log(data);
   const [CurrentExcercise, setExcercise] = useState({});
   const [IsStarted, setStart] = useState(false);
   const [CreateTracking] = useMutation(Mutations.tracking);
@@ -21,11 +21,8 @@ function StartWorkoutComponent({ props }) {
       return response;
     });
   };
-  const Pause = () => {
-    data.forEach
-  };
   const Begin = async () => {
-    if (data.length > 0) {
+    if (data.exercise.length > 0 || category == "CARDIO") {
       CreateTracking({
         variables: { IsStarted: true, workout },
       })
@@ -33,28 +30,45 @@ function StartWorkoutComponent({ props }) {
           return response.data;
         })
         .then((resdata) => {
-      if (resdata.trackingsCreate.status) {
-      setStart((e) => !e);
-      let timing = 0;
-      let totalduration = data.reduce((a, b) => {
-        return a + b.duration;
-      }, 0);
-      data.forEach((item, index) => {
-        setTimeout(() => setExcercise(item),parseInt(data.length) > 1 ? timing * 1000 : setExcercise(item));
-        timing += parseInt(item.duration);
-      });
-      setTimeout(() => updateTrackings(), parseInt(totalduration + 2) * 1000);
+          setStart((e) => !e);
+          if (resdata.trackingsCreate.status && category != "CARDIO") {
+            let timing = 0;
+            let totalduration = data.exercise.reduce((a, b) => {
+              return a + b.duration;
+            }, 0);
+            data.exercise.forEach((item, index) => {
+              setTimeout(
+                () => setExcercise(item),
+                parseInt(data.length) > 1 ? timing * 1000 : setExcercise(item)
+              );
+              timing += parseInt(item.duration);
+            });
+            setTimeout(
+              () => updateTrackings(),
+              parseInt(totalduration + 2) * 1000
+            );
+          }
+          // if(!IsStarted){
+          //   updateTrackings()
+          // }
+        });
     }
-    });
-  };
   };
   return (
     <>
-      {data?.length && (
-        <div>
+      {data?.exercise?.length && !category.includes("CARDI0") && (
+        <div className="startworkoucomp">
           <div className="startworkoutdiv">
-            <h1 style={{ textAlign: "center" }}>{data[0].workout.name}</h1>
-            {data?.map((e, index) => {
+            <div style={{ display: "flex", alignItems: "center", gap: "2%" }}>
+              <h1 style={{ textAlign: "center" }}>
+                {data.name} <span></span>{" "}
+              </h1>
+              <button onClick={() => Begin()} style={{ float: "left" }}>
+                {console.log(IsStarted)}
+                {IsStarted ? "STOP" : "Start"}
+              </button>
+            </div>
+            {data?.exercise?.map((e, index) => {
               return (
                 <details key={e.id}>
                   <summary>{e.exercise}</summary>
@@ -65,21 +79,40 @@ function StartWorkoutComponent({ props }) {
               );
             })}
           </div>
-          <button
-            onClick={() => Begin()}
-            style={{ float: "left" }}
-          >
-            {console.log(IsStarted)}
-            {IsStarted ? "STOP" : "Start"}
-          </button>
         </div>
       )}
+      {category.includes("CARDIO") && (
+        <div className="startworkoucomp">
+          <div className="startworkoutdiv">
+            <div style={{ display: "flex", alignItems: "center", gap: "2%" }}>
+              <h1 style={{ textAlign: "center" }}>
+                {data.name} <span></span>{" "}
+              </h1>
+              <button
+                onClick={() =>
+                  IsStarted && data.category == "CARDIO"
+                    ? updateTrackings()
+                    : Begin()
+                }
+                style={{ float: "left" }}
+              >
+                {IsStarted ? "STOP" : "Start"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {IsStarted && (
         <div>
-          {IsStarted && <>Current Excercise:{CurrentExcercise.exercise}</>}
+          {(IsStarted && category === "WORKOUT" && (
+            <>Current Excercise:{CurrentExcercise.exercise}</>
+          )) ||
+            "STARTED"}
         </div>
       )}
-      {!data?.length && <Workouts props={{ id: id }} />}
+      {/* {console.log(!data?.length),} */}
+      {/* {!data?.length && category == "WORKOUT" && <Workouts/>} */}
     </>
   );
 }

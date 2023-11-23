@@ -5,6 +5,7 @@ import { basicInfoChange } from "../redux-store/redux-featutre/userslice";
 import { WorkoutInfo } from "../redux-store/redux-featutre/workoutslice";
 import Queries from "./utils/graphqueries";
 import { useNavigate } from "react-router-dom";
+import { TopNavBar } from "../layouts/navlayout";
 
 import "../../assets/css/home.css";
 
@@ -39,22 +40,17 @@ function Workout() {
 }
 
 function Home() {
-  const { loading, error, data } = useQuery(Queries.dashboard);
-  const dispatch = useDispatch();
+  // const { loading, error, data } = useQuery(Queries.dashboard);
+  // const dispatch = useDispatch();
 
-  if (data) {
-    console.log(data.workout, data.friends);
-    dispatch(basicInfoChange(data.friends));
-    dispatch(WorkoutInfo(data.workout));
-  }
+  // if (data) {
+  //   console.log(data.workout, data.friends, data.friendsrequests);
+  //   dispatch(basicInfoChange(data.friends));
+  //   dispatch(WorkoutInfo(data.workout));
+  // }
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :</p>;
-  return (
-    <div className="topdash">
-      {<Friends />}
-      {<Workout />}
-    </div>
-  );
+  // if (loading) return <p>Loading...</p>;
+  // if (error) return <p>Error :</p>;
+  return <div className="topdash">{<TopNavBar />}</div>;
 }
 export default Home;

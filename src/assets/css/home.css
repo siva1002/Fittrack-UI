@@ -1,36 +1,86 @@
-/* body{
-    height: auto;
-} */
+body {
+  margin: 0;
+}
 
-.topdash{
-    display: flex;
-    flex-direction: row;
-    gap:10%;
-    justify-content:center
+.createworkout input {
+  width: 75%;
 }
-.createworkout input{
-    width: 75%;
-  }
 
-.createworkout{
-    background-color: #c4f6ff;
-    float: right;
-    max-width: 50%;
+.createworkout {
+  background-color: #f4fafc;
+  float: right;
+  max-width: 50%;
+  text-align: center;
 }
-.workoutdiv{
-    display: flex;
-    flex-direction: column;
+.workoutdiv {
+  margin: auto;
 }
-button{
-    width: auto;
-    
+
+.workouts {
+  margin: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 }
-.workouts{
+
+
+
+.top-nav-bar {
+  text-align-last: center;
+  display: flex;
+  justify-content: center;
+  gap: 2%;
+  margin-bottom: 4%;
+  padding: 1%;
+  background-color: crimson;
+}
+a {
+  all: unset;
+}
+.top-nav-bar a {
+  font-size: x-large;
+  margin: 2px;
+  color: white;
+  font-family: monospace;
+}
+
+.top-nav-bar a:active {
+  background-color: gainsboro;
+}
+.relatedusers {
+  text-align: center;
     margin: auto;
 }
 
-.routines{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.relatedusers div {
+  display: flex;
+  align-items: center;
+  margin-left: 44%;
+}
+.each-workout {
+  border: 1px solid crimson;
+  border-radius: 1%;
+  margin: 1%;
+  padding: 0.5%;
+}
+
+.each-workout button {
+  background-color: rgb(138, 142, 146);
+  border-radius: 0;
+  width: 100%;
+}
+.each-workout button:hover {
+  background-color: black;
+}
+button {
+  width: auto;
+}
+.non-friends {
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
+.workouts span p{
+  display: inline;
 }
